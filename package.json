@@ -1,7 +1,7 @@
 {
-  "name": "template_node",
+  "name": "yt_downloader",
   "version": "0.0.1",
-  "description": "A simple and clear description for the project",
+  "description": "A configurable package to download YouTube videos",
   "main": "src/index.js",
   "scripts": {
     "test": "jest",
@@ -12,18 +12,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/totallynotdavid/yt_metadata.git"
+    "url": "git+https://github.com/totallynotdavid/yt_downloader.git"
   },
   "keywords": [
-    "node",
-    "template"
+    "YouTube",
+    "download",
+    "audio-converter"
   ],
   "author": "David Duran <david@caefisica.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/totallynotdavid/yt_metadata/issues"
+    "url": "https://github.com/totallynotdavid/yt_downloader/issues"
   },
-  "homepage": "https://github.com/totallynotdavid/yt_metadata#readme",
+  "homepage": "https://github.com/totallynotdavid/yt_downloader#readme",
   "devDependencies": {
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
