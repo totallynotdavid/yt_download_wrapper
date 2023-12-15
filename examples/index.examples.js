@@ -1,22 +1,22 @@
-const yt_downloader = require("../src/index")
+const ytDownloader = require("../src/index")
 
-async function run() {
+async function exampleFunction(youtubeId, startTime, endTime, format) {
   try {
-    const youtubeId = "dQw4w9WgXcQ" // Replace with the desired YouTube video ID
-    const startTime = 30 // Optional: Start time in seconds
-    const endTime = 120 // Optional: End time in seconds
-    const format = "ogg" // Desired output format
-
-    const processedFilePath = await yt_downloader(
+    const processedFilePath = await ytDownloader(
       youtubeId,
       startTime,
       endTime,
       format,
     )
-    console.log("Processed video saved at:", processedFilePath)
+    console.log(`Processed video [${youtubeId}] saved at:`, processedFilePath)
   } catch (error) {
-    console.error("An error occurred:", error)
+    console.error(`An error occurred processing [${youtubeId}]:`, error)
   }
 }
 
-run()
+async function runExamples() {
+  await exampleFunction("dQw4w9WgXcQ", 30, 120, "ogg")
+  await exampleFunction("el0N_MDcp0Y", 30, 120, "mp3")
+}
+
+runExamples()
