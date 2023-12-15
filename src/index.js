@@ -30,7 +30,6 @@ async function processYouTubeVideo(
       throw new Error("Failed to download the video or parse the file name.")
     }
     const currentFormat = path.extname(downloadedFilePath).substring(1) // Extracts the extension without the dot
-    console.log("currentFormat", currentFormat)
 
     if (currentFormat !== format) {
       return await convertToFormat(downloadedFilePath, format)
