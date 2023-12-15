@@ -1,6 +1,6 @@
-[![npm](https://img.shields.io/npm/v/yt_downloader.svg)](https://www.npmjs.com/package/yt_downloader) ![yt_downloader 0.0.1](https://img.shields.io/badge/yt_downloader-0.0.1-brightgreen.svg)
+[![npm](https://img.shields.io/npm/v/ytdlp_video_processor.svg)](https://www.npmjs.com/package/ytdlp_video_processor) ![ytdlp_video_processor 0.0.1](https://img.shields.io/badge/ytdlp_video_processor-0.0.1-brightgreen.svg)
 
-# yt_downloader
+# ytdlp_video_processor
 
 Module for downloading, processing, and optionally converting YouTube videos. This package uses `yt-dlp` for downloading videos and `ffmpeg` for processing and converting them.
 
@@ -9,7 +9,7 @@ Module for downloading, processing, and optionally converting YouTube videos. Th
 Run the following command in your project directory to install the package:
 
 ```bash
-npm install yt_downloader
+npm install ytdlp_video_processor
 ```
 
 ## Usage
@@ -17,10 +17,10 @@ npm install yt_downloader
 To use this module, first, import it:
 
 ```javascript
-const yt_downloader = require("yt_downloader")
+const ytdlp_video_processor = require("ytdlp_video_processor")
 ```
 
-Then, call `yt_downloader` with the necessary parameters:
+Then, call `ytdlp_video_processor` with the necessary parameters:
 
 ```javascript
 async function downloadAndProcessVideo() {
@@ -30,7 +30,7 @@ async function downloadAndProcessVideo() {
   const format = "ogg" // Optional: Desired output format (default is 'ogg')
 
   try {
-    const processedFilePath = await yt_downloader(
+    const processedFilePath = await ytdlp_video_processor(
       youtubeId,
       startTime,
       endTime,
