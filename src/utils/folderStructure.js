@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs")
 
 /**
  * Ensures that the specified directory exists. If it doesn't, it's created.
@@ -6,8 +6,8 @@ const fs = require('fs');
  */
 function ensureDirectoryExists(dirPath) {
   if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
+    fs.mkdirSync(dirPath, { recursive: true })
   }
 }
 
-module.exports = { ensureDirectoryExists };
+module.exports = { ensureDirectoryExists }
