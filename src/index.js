@@ -20,10 +20,12 @@ async function processYouTubeVideo(
   format,
   quality,
 ) {
+  const results = []
+
   try {
     ensureDirectoryExists(path.resolve(config.mediaAssetsFolder))
 
-    const formatType = format ? config.formats[format].type : "video" // Default to video if format is not specified
+    const formatType = format ? config.formats[format].type : "audio"
     format = format || config.defaultFormat[formatType]
     quality = quality || config.defaultQuality[formatType]
 
@@ -38,7 +40,8 @@ async function processYouTubeVideo(
       throw new Error("Failed to download the video or parse the file name.")
     }
 
-    downloadedFilePath = path.resolve(downloadedFilePath) // Convert to absolute path
+    downloadedFilePath = path.resolve(downloadedFilePath)
+    results.push({ type: formatType, path: downloadedFilePath })
 
     const currentFormat = path.extname(downloadedFilePath).substring(1) // Extracts the extension without the dot
 
@@ -47,11 +50,11 @@ async function processYouTubeVideo(
         downloadedFilePath,
         format,
       )
-      return path.resolve(convertedFilePath)
+      const fileType = config.formats[format] ? config.formats[format].type : "unknown";
+      results.push({ type: fileType, path: path.resolve(convertedFilePath) })
     }
 
-    // Return the path of the downloaded (and possibly trimmed) video or audio file
-    return downloadedFilePath
+    return results
   } catch (error) {
     console.error("Error processing the YouTube video:", error)
     throw error
