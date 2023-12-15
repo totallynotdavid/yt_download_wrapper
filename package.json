@@ -1,5 +1,5 @@
 {
-  "name": "yt_downloader",
+  "name": "yt_download_wrapper",
   "version": "0.0.1",
   "description": "A configurable yt-dlp wrapper to download YouTube videos",
   "main": "src/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/totallynotdavid/yt_downloader.git"
+    "url": "git+https://github.com/totallynotdavid/yt_download_wrapper.git"
   },
   "keywords": [
     "YouTube",
@@ -22,9 +22,9 @@
   "author": "David Duran <david@caefisica.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/totallynotdavid/yt_downloader/issues"
+    "url": "https://github.com/totallynotdavid/yt_download_wrapper/issues"
   },
-  "homepage": "https://github.com/totallynotdavid/yt_downloader#readme",
+  "homepage": "https://github.com/totallynotdavid/yt_download_wrapper#readme",
   "devDependencies": {
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
