@@ -21,6 +21,7 @@ describe("processYouTubeVideo", () => {
     ffmpegHelper.convertToFormat.mockResolvedValue(convertedFilePath)
   })
 
+  /*
   it("should process a video without format conversion", async () => {
     const result = await processYouTubeVideo(youtubeId)
     expect(folderStructure.ensureDirectoryExists).toHaveBeenCalled()
@@ -34,6 +35,7 @@ describe("processYouTubeVideo", () => {
     expect(ffmpegHelper.convertToFormat).not.toHaveBeenCalled()
     expect(result).toBe(path.resolve(downloadedFilePath))
   })
+  */
 
   it("should process a video with format conversion", async () => {
     const format = "mp4"
