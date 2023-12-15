@@ -6,8 +6,8 @@ function downloadVideo(youtubeId, startTime, endTime, format, quality) {
   const formatType = config.formats[format]
     ? config.formats[format].type
     : "audio"
-  const formatConfig =
-    config.formats[format] || config.formats[config.defaultFormat[formatType]]
+  // const formatConfig =
+  //  config.formats[format] || config.formats[config.defaultFormat[formatType]]
 
   const qualitySetting =
     config.qualitySettings[quality || config.defaultQuality[formatType]][
