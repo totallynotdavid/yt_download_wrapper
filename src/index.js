@@ -50,7 +50,9 @@ async function processYouTubeVideo(
         downloadedFilePath,
         format,
       )
-      const fileType = config.formats[format] ? config.formats[format].type : "unknown";
+      const fileType = config.formats[format]
+        ? config.formats[format].type
+        : "unknown"
       results.push({ type: fileType, path: path.resolve(convertedFilePath) })
     }
 
