@@ -28,6 +28,8 @@ describe("processYouTubeVideo", () => {
       youtubeId,
       undefined,
       undefined,
+      "mp4",
+      "worst",
     )
     expect(ffmpegHelper.convertToFormat).not.toHaveBeenCalled()
     expect(result).toBe(path.resolve(downloadedFilePath))
@@ -45,6 +47,8 @@ describe("processYouTubeVideo", () => {
       youtubeId,
       null,
       null,
+      "mp4",
+      "worst",
     )
     expect(ffmpegHelper.convertToFormat).toHaveBeenCalledWith(
       absoluteDownloadedFilePath,
