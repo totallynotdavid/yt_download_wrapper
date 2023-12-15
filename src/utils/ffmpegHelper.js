@@ -10,7 +10,8 @@ function convertToFormat(inputPath, format) {
     path.extname(inputPath),
     `.${formatConfig.ext}`,
   )
-  const command = `ffmpeg -i "${inputPath}" -c:a ${formatConfig.codec} "${outputPath}"`
+  const command = `ffmpeg -y -i "${inputPath}" -c:a ${formatConfig.codec} "${outputPath}"`
+
   return execCommand(command).then(() => outputPath)
 }
 
