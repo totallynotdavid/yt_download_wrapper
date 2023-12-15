@@ -17,6 +17,8 @@ async function exampleFunction(youtubeId, startTime, endTime, format) {
 async function runExamples() {
   await exampleFunction("dQw4w9WgXcQ", 30, 120, "ogg")
   await exampleFunction("el0N_MDcp0Y", 30, 120, "mp3")
+  await exampleFunction("xg43lcItgKk", 30, 120, "mp4")
+  await exampleFunction("k9tgLnI0fFc", null, null, (format = "webm"))
 }
 
 runExamples()
