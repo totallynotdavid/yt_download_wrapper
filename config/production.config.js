@@ -1,7 +1,15 @@
 module.exports = {
   mediaAssetsFolder: "media",
-  defaultQuality: "best",
-  defaultFormat: "ogg",
+
+  defaultQuality: {
+    audio: "best",
+    video: "worst",
+  },
+
+  defaultFormat: {
+    audio: "ogg",
+    video: "mp4",
+  },
 
   qualitySettings: {
     best: {
@@ -34,5 +42,6 @@ module.exports = {
     },
     mp3: { type: "audio", ffmpegCodec: "libmp3lame" },
     ogg: { type: "audio", ffmpegCodec: "libopus" },
+    opus: { type: "audio", ffmpegCodec: "libopus" },
   },
 }
