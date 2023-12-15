@@ -20,3 +20,5 @@ examples
 .nvmrc
 LICENSE
 pnpm-lock.yaml
+.prettierignore
+.prettiersrc
