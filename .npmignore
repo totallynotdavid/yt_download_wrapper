@@ -7,6 +7,7 @@
 node_modules
 coverage
 __tests__
+media
 jest.config.js
 
 # Examples and editor/environment configuration
@@ -14,3 +15,8 @@ examples
 .nvmrc
 .env
 .eslintrc.json
+.gitignore
+.npmignore
+.nvmrc
+LICENSE
+pnpm-lock.yaml
