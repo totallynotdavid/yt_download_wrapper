@@ -5,7 +5,7 @@ module.exports = {
   mediaAssetsFolder: "media",
   preferredDownloadQuality: "bestaudio",
   supportedFormats: {
-    mp4: { codec: "libx264", ext: "mp4" },
+    mp3: { codec: "libmp3lame", ext: "mp3" },
     ogg: { codec: "libopus", ext: "ogg" },
   },
   defaultFormat: "ogg",
