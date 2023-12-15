@@ -1,15 +1,30 @@
 const config = require("../../config/production.config")
 const path = require("path")
-const { exec } = require("child_process")
+const execCommand = require("./exec")
 
-function downloadVideo(youtubeId, startTime, endTime) {
+function downloadVideo(
+  youtubeId,
+  startTime,
+  endTime,
+  format = config.defaultFormat,
+  quality = config.defaultQuality,
+) {
+  const qualitySetting =
+    config.qualitySettings[quality][config.formats[format].type]
   const filenameTemplate = `${youtubeId}.%(ext)s`
-  let command = `yt-dlp -v --extract-audio --audio-format opus -f ${config.preferredDownloadQuality} https://www.youtube.com/watch?v=${youtubeId}`
+  let command = `yt-dlp -v -f ${qualitySetting} https://www.youtube.com/watch?v=${youtubeId}`
+
+  if (
+    config.formats[format].type === "audio" &&
+    config.ytDlpAudioFormats.includes(format)
+  ) {
+    command += ` --extract-audio --audio-format ${format}`
+  }
+
   command += ` -P "${config.mediaAssetsFolder}"`
 
-  // Download only the specified time range
   if (startTime !== undefined || endTime !== undefined) {
-    const timeRange = `*${startTime || ""}-${endTime || "inf"}` // 'inf' to denote the end of the video
+    const timeRange = `*${startTime || ""}-${endTime || "inf"}` // inf is the end of the video
     command += ` --download-sections "${timeRange}"`
   }
 
@@ -17,18 +32,6 @@ function downloadVideo(youtubeId, startTime, endTime) {
   return execCommand(command)
     .then((stdout) => getVideoFilename(stdout))
     .catch(handleDownloadError)
-}
-
-function execCommand(command) {
-  return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        reject({ error, stdout, stderr })
-      } else {
-        resolve(stdout)
-      }
-    })
-  })
 }
 
 function getVideoFilename(stdout) {
