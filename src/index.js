@@ -17,11 +17,15 @@ async function processYouTubeVideo(
   youtubeId,
   startTime,
   endTime,
-  format = config.defaultFormat,
-  quality = config.defaultQuality,
+  format,
+  quality,
 ) {
   try {
     ensureDirectoryExists(path.resolve(config.mediaAssetsFolder))
+
+    const formatType = format ? config.formats[format].type : "video" // Default to video if format is not specified
+    format = format || config.defaultFormat[formatType]
+    quality = quality || config.defaultQuality[formatType]
 
     let downloadedFilePath = await downloadVideo(
       youtubeId,
