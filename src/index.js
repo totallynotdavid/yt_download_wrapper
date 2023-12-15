@@ -21,18 +21,21 @@ async function processYouTubeVideo(
   try {
     ensureDirectoryExists(path.resolve(config.mediaAssetsFolder))
 
-    const downloadedFilePath = await downloadVideo(
-      youtubeId,
-      startTime,
-      endTime,
-    )
+    let downloadedFilePath = await downloadVideo(youtubeId, startTime, endTime)
     if (!downloadedFilePath) {
       throw new Error("Failed to download the video or parse the file name.")
     }
+
+    downloadedFilePath = path.resolve(downloadedFilePath) // Convert to absolute path
+
     const currentFormat = path.extname(downloadedFilePath).substring(1) // Extracts the extension without the dot
 
     if (currentFormat !== format) {
-      return await convertToFormat(downloadedFilePath, format)
+      const convertedFilePath = await convertToFormat(
+        downloadedFilePath,
+        format,
+      )
+      return path.resolve(convertedFilePath)
     }
 
     // Return the path of the downloaded (and possibly trimmed) audio
