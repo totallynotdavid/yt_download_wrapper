@@ -7,7 +7,7 @@ module.exports = {
   },
 
   defaultFormat: {
-    audio: "ogg",
+    audio: "opus",
     video: "mp4",
   },
 
