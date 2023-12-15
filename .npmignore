@@ -21,4 +21,4 @@ examples
 LICENSE
 pnpm-lock.yaml
 .prettierignore
-.prettiersrc
+.prettierrc
