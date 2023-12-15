@@ -2,26 +2,32 @@ const config = require("../../config/production.config")
 const path = require("path")
 const execCommand = require("./exec")
 
-function downloadVideo(
-  youtubeId,
-  startTime,
-  endTime,
-  format = config.defaultFormat,
-  quality = config.defaultQuality,
-) {
-  const qualitySetting =
-    config.qualitySettings[quality][config.formats[format].type]
-  const filenameTemplate = `${youtubeId}.%(ext)s`
-  let command = `yt-dlp -v -f ${qualitySetting} https://www.youtube.com/watch?v=${youtubeId}`
+function downloadVideo(youtubeId, startTime, endTime, format, quality) {
+  const formatType = config.formats[format]
+    ? config.formats[format].type
+    : "audio"
+  const formatConfig =
+    config.formats[format] || config.formats[config.defaultFormat[formatType]]
 
-  if (
-    config.formats[format].type === "audio" &&
-    config.ytDlpAudioFormats.includes(format)
-  ) {
-    command += ` --extract-audio --audio-format ${format}`
+  const qualitySetting =
+    config.qualitySettings[quality || config.defaultQuality[formatType]][
+      formatType
+    ]
+  const filenameTemplate = `${youtubeId}.%(ext)s`
+
+  let command = `yt-dlp -v `
+
+  if (formatType === "video") {
+    command += `-f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b" `
+  } else if (formatType === "audio") {
+    if (config.ytDlpAudioFormats.includes(format)) {
+      command += `-f ${qualitySetting} --extract-audio --audio-format ${format} `
+    } else {
+      command += `-f ${qualitySetting} --extract-audio `
+    }
   }
 
-  command += ` -P "${config.mediaAssetsFolder}"`
+  command += `https://www.youtube.com/watch?v=${youtubeId} -P "${config.mediaAssetsFolder}"`
 
   if (startTime !== undefined || endTime !== undefined) {
     const timeRange = `*${startTime || ""}-${endTime || "inf"}` // inf is the end of the video
@@ -37,11 +43,15 @@ function downloadVideo(
 function getVideoFilename(stdout) {
   const alreadyDownloadedRegex =
     /\[download\] ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|flv|avi|mkv|opus)) has already been downloaded/
+  const extractAudioRegex =
+    /\[ExtractAudio\] Destination: ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|flv|avi|mkv|opus))/
   const destinationRegex =
     /Destination: ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|flv|avi|mkv|opus))/
 
   const match =
-    stdout.match(alreadyDownloadedRegex) || stdout.match(destinationRegex)
+    stdout.match(extractAudioRegex) ||
+    stdout.match(alreadyDownloadedRegex) ||
+    stdout.match(destinationRegex)
   if (match) {
     const filePath = path.join(match[1])
     return filePath
