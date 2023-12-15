@@ -1,5 +1,5 @@
 {
-  "name": "yt_download_wrapper",
+  "name": "yt_wrapper",
   "version": "0.0.1",
   "description": "A configurable yt-dlp wrapper to download YouTube videos",
   "main": "src/index.js",
