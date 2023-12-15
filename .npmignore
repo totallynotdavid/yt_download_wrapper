@@ -16,8 +16,6 @@ examples
 .env
 .eslintrc.json
 .gitignore
-.npmignore
-.nvmrc
 LICENSE
 pnpm-lock.yaml
 .prettierignore
