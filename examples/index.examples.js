@@ -25,10 +25,16 @@ async function runExamples() {
   })
 
   // Gets the full file in an opus format
-  await exampleFunction("4lJfA6ANgNM")
+  await exampleFunction({
+    youtubeId: "4lJfA6ANgNM",
+  })
 
   // Gets the full file in an opus format and trimmed
-  await exampleFunction("BxqYUbNR-c0", 30, 120)
+  await exampleFunction({
+    youtubeId: "BxqYUbNR-c0",
+    startTime: 30,
+    endTime: 120,
+  })
 
   // Gets the full video in an mp4 format in the best quality
   await exampleFunction({
@@ -37,7 +43,12 @@ async function runExamples() {
   })
 
   // Currently, there is known bug when using this:
-  await exampleFunction("xg43lcItgKk", 30, 120, "mp4") // The result is an mp4 file without video, only audio
+  await exampleFunction({
+    youtubeId: "xg43lcItgKk",
+    startTime: 30,
+    endTime: 120,
+    format: "mp4",
+  }) // The result is an mp4 file without video, only audio
 }
 
 runExamples()
