@@ -2,6 +2,20 @@ const config = require("../../config/production.config")
 const path = require("path")
 const execCommand = require("./exec")
 
+/**
+ * Downloads a video from YouTube using the yt-dlp command line utility.
+ *
+ * This function builds and executes a yt-dlp command to download a video (or audio) from YouTube,
+ * optionally trimming it to a specified time range and converting it to a specified format and quality.
+ *
+ * @param {string} youtubeId    - The YouTube video ID.
+ * @param {number} [startTime]  - The start time for video trimming (in seconds). Optional.
+ * @param {number} [endTime]    - The end time for video trimming (in seconds). Optional.
+ * @param {string} [format]     - The desired output video format. Optional.
+ * @param {string} [quality]    - The desired quality for downloading (e.g., 'best', 'worst'). Optional.
+ * @returns {Promise<string>}     A promise that resolves with the file path of the downloaded video.
+ *                                In case of an error, the promise is rejected with the error details.
+ */
 function downloadVideo(youtubeId, startTime, endTime, format, quality) {
   const formatType = config.formats[format]
     ? config.formats[format].type
@@ -40,6 +54,12 @@ function downloadVideo(youtubeId, startTime, endTime, format, quality) {
     .catch(handleDownloadError)
 }
 
+/**
+ * Extracts the filename of the downloaded video from the standard output of yt-dlp.
+ *
+ * @param {string} stdout   - The standard output from executing the yt-dlp command.
+ * @returns {string|null}     The file path of the downloaded video, or null if not found.
+ */
 function getVideoFilename(stdout) {
   const alreadyDownloadedRegex =
     /\[download\] ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|flv|avi|mkv|opus)) has already been downloaded/
@@ -60,6 +80,12 @@ function getVideoFilename(stdout) {
   return null
 }
 
+/**
+ * Handles errors that occur during video download.
+ *
+ * @param {Object} error  - The error object containing details about the failure.
+ * @throws {Error}          Throws a new error with a more specific message if the video is unavailable.
+ */
 function handleDownloadError(error) {
   if (
     error.stderr &&
