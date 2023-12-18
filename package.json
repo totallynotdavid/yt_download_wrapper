@@ -1,6 +1,6 @@
 {
   "name": "ytdlp_video_processor",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A configurable yt-dlp wrapper to download YouTube videos",
   "main": "src/index.js",
   "scripts": {
