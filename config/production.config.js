@@ -39,7 +39,7 @@ module.exports = {
       worst: "wv*+wa/w",
     },
     videoSize: {
-      small: "14M",
+      small: "13M",
       medium: "50M",
       large: "100M",
     },
