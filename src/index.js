@@ -19,15 +19,19 @@ async function processYouTubeVideo(
   endTime,
   format,
   quality,
+  videoSize,
 ) {
   const results = []
 
   try {
-    ensureDirectoryExists(path.resolve(config.mediaAssetsFolder))
+    ensureDirectoryExists(path.resolve(config.directories.mediaAssets))
 
-    const formatType = format ? config.formats[format].type : "audio"
-    format = format || config.defaultFormat[formatType]
-    quality = quality || config.defaultQuality[formatType]
+    let formatType = "audio"
+    if (format && config.formats.video[format]) {
+      formatType = "video"
+    }
+    format = format || config.defaults.format[formatType]
+    quality = quality || config.defaults.quality[formatType]
 
     let downloadedFilePath = await downloadVideo(
       youtubeId,
@@ -35,6 +39,7 @@ async function processYouTubeVideo(
       endTime,
       format,
       quality,
+      videoSize,
     )
     if (!downloadedFilePath) {
       throw new Error("Failed to download the video or parse the file name.")
@@ -50,10 +55,7 @@ async function processYouTubeVideo(
         downloadedFilePath,
         format,
       )
-      const fileType = config.formats[format]
-        ? config.formats[format].type
-        : "unknown"
-      results.push({ type: fileType, path: path.resolve(convertedFilePath) })
+      results.push({ type: formatType, path: path.resolve(convertedFilePath) })
     }
 
     return results

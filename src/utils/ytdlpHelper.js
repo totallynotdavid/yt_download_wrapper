@@ -16,32 +16,44 @@ const execCommand = require("./exec")
  * @returns {Promise<string>}     A promise that resolves with the file path of the downloaded video.
  *                                In case of an error, the promise is rejected with the error details.
  */
-function downloadVideo(youtubeId, startTime, endTime, format, quality) {
-  const formatType = config.formats[format]
-    ? config.formats[format].type
-    : "audio"
-  // const formatConfig =
-  //  config.formats[format] || config.formats[config.defaultFormat[formatType]]
-
+function downloadVideo(
+  youtubeId,
+  startTime,
+  endTime,
+  format = config.defaults.format.audio,
+  quality = config.defaults.quality.audio,
+  videoSize = config.defaults.videoSizeLimit,
+) {
+  const formatType = format in config.formats.audio ? "audio" : "video"
   const qualitySetting =
-    config.qualitySettings[quality || config.defaultQuality[formatType]][
-      formatType
+    config.downloadSettings[`${formatType}Quality`][quality] ||
+    config.downloadSettings[`${formatType}Quality`][
+      config.defaults.quality[formatType]
     ]
+
   const filenameTemplate = `${youtubeId}.%(ext)s`
 
   let command = `yt-dlp -v `
 
   if (formatType === "video") {
-    command += `-f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b" `
-  } else if (formatType === "audio") {
-    if (config.ytDlpAudioFormats.includes(format)) {
-      command += `-f ${qualitySetting} --extract-audio --audio-format ${format} `
+    let videoFormat
+
+    if (videoSize && config.downloadSettings.videoSize[videoSize]) {
+      const sizeLimit = config.downloadSettings.videoSize[videoSize]
+      videoFormat = `bv*[ext=mp4][filesize<=${sizeLimit}]+ba[ext=m4a]/b[ext=mp4][filesize<=${sizeLimit}]`
+      command += `-f "${videoFormat}" -S "filesize:${sizeLimit}" `
     } else {
-      command += `-f ${qualitySetting} --extract-audio `
+      videoFormat = qualitySetting
+      command += `-f "${videoFormat}" `
+    }
+  } else if (formatType === "audio") {
+    command += `-f ${qualitySetting} --extract-audio `
+    if (format in config.formats.audio) {
+      command += `--audio-format ${format} `
     }
   }
 
-  command += `https://www.youtube.com/watch?v=${youtubeId} -P "${config.mediaAssetsFolder}"`
+  command += `https://www.youtube.com/watch?v=${youtubeId} -P "${config.directories.mediaAssets}"`
 
   if (startTime !== undefined || endTime !== undefined) {
     const timeRange = `*${startTime || ""}-${endTime || "inf"}` // inf is the end of the video
@@ -49,6 +61,7 @@ function downloadVideo(youtubeId, startTime, endTime, format, quality) {
   }
 
   command += ` -o "${filenameTemplate}"`
+
   return execCommand(command)
     .then((stdout) => getVideoFilename(stdout))
     .catch(handleDownloadError)
@@ -62,16 +75,19 @@ function downloadVideo(youtubeId, startTime, endTime, format, quality) {
  */
 function getVideoFilename(stdout) {
   const alreadyDownloadedRegex =
-    /\[download\] ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|flv|avi|mkv|opus)) has already been downloaded/
+    /\[download\] ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|opus)) has already been downloaded/
   const extractAudioRegex =
-    /\[ExtractAudio\] Destination: ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|flv|avi|mkv|opus))/
+    /\[ExtractAudio\] Destination: ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|opus))/
   const destinationRegex =
-    /Destination: ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|flv|avi|mkv|opus))/
+    /Destination: ([\w/\\]+.{11}\.(webm|m4a|mp3|mp4|opus))/
+  const mergerRegex =
+    /\[Merger\] Merging formats into "([\w/\\]+.{11}\.(mp4|avi))"/
 
   const match =
+    stdout.match(mergerRegex) ||
     stdout.match(extractAudioRegex) ||
-    stdout.match(alreadyDownloadedRegex) ||
-    stdout.match(destinationRegex)
+    stdout.match(destinationRegex) ||
+    stdout.match(alreadyDownloadedRegex)
   if (match) {
     const filePath = path.join(match[1])
     return filePath

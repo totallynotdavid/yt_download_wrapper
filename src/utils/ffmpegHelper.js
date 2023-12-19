@@ -18,13 +18,15 @@ const execCommand = require("./exec")
  *                              The promise is rejected if the conversion process fails.
  */
 function convertToFormat(inputPath, format) {
+  const formatType = config.formats.audio[format] ? "audio" : "video"
   const formatConfig =
-    config.formats[format] || config.formats[config.defaultFormat]
+    config.formats[formatType][format] ||
+    config.formats[formatType][config.defaults.format[formatType]]
 
   const outputPath = inputPath.replace(path.extname(inputPath), `.${format}`)
 
   let command = `ffmpeg -y -i "${inputPath}"`
-  if (formatConfig.type === "audio") {
+  if (formatType === "audio") {
     command += ` -c:a ${formatConfig.ffmpegCodec} "${outputPath}"`
   } else {
     command += ` -c:v ${formatConfig.ffmpegCodec} -c:a ${formatConfig.ffmpegAudioCodec} "${outputPath}"`
