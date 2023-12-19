@@ -45,7 +45,7 @@ async function downloadAndProcessVideo() {
 downloadAndProcessVideo()
 ```
 
-You can find more usage examples in the [examples/index.examples.js](src/index.examples.js) file in the `examples` folder.
+You can find more usage examples in the [examples/index.examples.js](examples/index.examples.js) file in the `examples` folder.
 
 ## Features
 
@@ -66,4 +66,4 @@ When contributing:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
